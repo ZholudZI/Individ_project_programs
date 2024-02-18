@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заголовок</title>
+</head>
+<body>
+    <style>
+        #anwsers {
+            display: flex;
+            flex-direction: column;
+            width: 220px;
+
+        }
+        #enter-block {
+            display: flex;
+            width: 420px;
+            justify-content: space-between;
+        }
+        p {
+            display: inline-block;
+            margin: 0px 5px 8px 0px;
+        }
+        button {
+            margin-bottom: 10px;
+        }
+    </style>
+    <div id="enter-block">
+        <section id="full-element">
+            <p>1.</p>
+            <input type="number" class="input-Block">
+        </section>
+        <section id="anwsers">
+            <button onclick="add_input()">+</button>
+            <button onclick="finally_results()">Итоги</button>
+            <p id="arithmetic-mean">Среднее арифметическое = </p>
+            <p id="standard-error">S = </p>
+            <p id="m">m = </p>
+        </section>
+    </div>
+
+    <script>
+
+        function add_input() {
+            document.getElementById('full-element').insertAdjacentHTML('afterbegin', `<section> <p>${document.getElementsByClassName('input-Block').length + 1}.</p> <input type="number" class="input-Block"></section>`)
+        }
+
+        function finally_results() {
+            let results = 0
+            for (let i = 0; i < document.getElementsByClassName('input-Block').length; i++) results += +document.getElementsByClassName('input-Block')[i].value
+            document.getElementById('arithmetic-mean').innerHTML += (results / document.getElementsByClassName('input-Block').length).toFixed(3)
+            document.getElementById('standard-error').innerHTML += standard_error(results / document.getElementsByClassName('input-Block').length, document.getElementsByClassName('input-Block')).toFixed(3)
+            document.getElementById('m').innerHTML += (standard_error(results / document.getElementsByClassName('input-Block').length, document.getElementsByClassName('input-Block')) / Math.sqrt(document.getElementsByClassName('input-Block').length)).toFixed(3)
+        }
+
+        function standard_error(arithmetic_mean, number_array) {
+            let difference = 0
+            console.log(number_array.length)
+            for (let i = 0; i < number_array.length; i++) {
+                difference += (+number_array[i].value - arithmetic_mean)**2
+                console.log((+number_array[i].value - arithmetic_mean)**2)
+            }
+            console.log(difference)
+            return Math.sqrt(difference / (number_array.length - 1))
+        }
+    </script>
+</body>
+</html>
